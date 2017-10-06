@@ -16,26 +16,26 @@
         %let run_Tabla7         = 0;
         %let run_Tabla8         = 0;
 
-        %let Path = C:\Users\salamicros2-st.ITAM\Desktop\Proyecto Final;
+        %let Path = /folders/myfolders/proyecto Final;
 
-        /*  \folders\myfolders\proyecto Final; */
+        /* C:/Users/salamicros2-st.ITAM/Desktop/Proyecto Final; */
 
 
 
-        libname datos   "&Path\Input";
-        libname pre     "&Path\Preproceso";
-        libname general "&Path\General";
+        libname datos   "&Path/Input";
+        libname pre     "&Path/Preproceso";
+        libname general "&Path/General";
 
-        libname t0 "&Path\Tablas\Tabla 0";
-        libname t1 "&Path\Tablas\Tabla 1";
-        libname t2 "&Path\Tablas\Tabla 2";
-        libname t3 "&Path\Tablas\Tabla 3";
-        libname t4 "&Path\Tablas\Tabla 4";
-        libname t5 "&Path\Tablas\Tabla 5";
-        libname t6 "&Path\Tablas\Tabla 6";
-        libname t7 "&Path\Tablas\Tabla 7";
-        libname t8 "&Path\Tablas\Tabla 8";
-        libname ap "&Path\Tablas\Apendice";
+        libname t0 "&Path/Tablas/Tabla 0";
+        libname t1 "&Path/Tablas/Tabla 1";
+        libname t2 "&Path/Tablas/Tabla 2";
+        libname t3 "&Path/Tablas/Tabla 3";
+        libname t4 "&Path/Tablas/Tabla 4";
+        libname t5 "&Path/Tablas/Tabla 5";
+        libname t6 "&Path/Tablas/Tabla 6";
+        libname t7 "&Path/Tablas/Tabla 7";
+        libname t8 "&Path/Tablas/Tabla 8";
+        libname ap "&Path/Tablas/Apendice";
 
         %IF &should_clean %THEN %DO;
                 proc datasets library=pre kill;
@@ -53,50 +53,50 @@
                 run;
         %END;
 
-        %let Programs = &Path\Programas;
+        %let Programs = &Path/Programas;
 
         %IF &load_macros OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Macros\Do Over.sas";
-                %INCLUDE "&Programs\Macros\Utilidades.sas";
-                %INCLUDE "&Programs\Macros\Betas.sas";
-                %INCLUDE "&Programs\Macros\Portafolios.sas";
-                %INCLUDE "&Programs\Macros\Fama MacBeth.sas";
+                %INCLUDE "&Programs/Macros/Do Over.sas";
+                %INCLUDE "&Programs/Macros/Utilidades.sas";
+                %INCLUDE "&Programs/Macros/Betas.sas";
+                %INCLUDE "&Programs/Macros/Portafolios.sas";
+                %INCLUDE "&Programs/Macros/Fama MacBeth.sas";
         %end;
 
         %IF &run_Preprocessing OR &run_all %THEN %DO;
-                %INCLUDE "&Programs\Preproceso.sas";
+                %INCLUDE "&Programs/Preproceso.sas";
         %END;
 
         %IF &run_General OR &run_all %THEN %do;
-                %INCLUDE "&Programs\General.sas";
+                %INCLUDE "&Programs/General.sas";
         %end;
 
         %IF &run_Tabla0 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 0.sas";
+                %INCLUDE "&Programs/Tabla 0.sas";
         %end;
         %IF &run_Tabla1 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 1.sas";
+                %INCLUDE "&Programs/Tabla 1.sas";
         %end;
         %IF &run_Tabla2 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 2.sas";
+                %INCLUDE "&Programs/Tabla 2.sas";
         %end;
         %IF &run_Tabla3 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 3.sas";
+                %INCLUDE "&Programs/Tabla 3.sas";
         %end;
         %IF &run_Tabla4 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 4.sas";
+                %INCLUDE "&Programs/Tabla 4.sas";
         %end;
         %IF &run_Tabla5 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 5.sas";
+                %INCLUDE "&Programs/Tabla 5.sas";
         %end;
         %IF &run_Tabla6 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 6.sas";
+                %INCLUDE "&Programs/Tabla 6.sas";
         %end;
         %IF &run_Tabla7 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 7.sas";
+                %INCLUDE "&Programs/Tabla 7.sas";
         %end;
         %IF &run_Tabla8 OR &run_all %THEN %do;
-                %INCLUDE "&Programs\Tabla 8.sas";
+                %INCLUDE "&Programs/Tabla 8.sas";
         %end;
 %MEND;
 %Main

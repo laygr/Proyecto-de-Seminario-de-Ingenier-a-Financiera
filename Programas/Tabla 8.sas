@@ -1,36 +1,34 @@
+%triple_sort_independent(general.mensual, Size, BM, Lagged_Ri, 3, p_size_bm_laggedR);
+%triple_sort_independent(general.mensual, Size, BM, Beta_1M, 3, p_size_BM_beta1M);
+%triple_sort_independent(general.mensual, Size, BM, Beta_12M, 3, p_size_BM_beta12M);
+%triple_sort_independent(general.mensual, Size, BM, Errors_1M, 3, p_size_BM_Errors_1M);
 
-
-data trucada;
-        set trucada;
-        where year = 1990 and month < 7;
-run;
 
 %fama_macbeth(general.Mensual, Lead_Ri_m_Rf, BM Size, bm_size)
-%fama_macbeth(trucada, Lead_Ri_m_Rf, Size, size)
-
-proc sort data = Data6;
-        by cookd;
-run;
-
-
-%single_sort(trucada, size, 3, 0, ew_size)
-
 %fama_macbeth(general.Mensual,
         Lead_Ri_m_Rf, SIZE BM LAGGED_RI BETA_1M BETA_12M ERRORS_1M PRECIO VOLUMEN BA_SPREAD, all)
 
-
+/* PCA */
 %sort_by(general.mensual, year month ticker)
-
 proc princomp
-        data = general.mensual
-        output = pc
-        standard
-        plots=patternprofile
-        ;
-
-        var SIZE BM LAGGED_RI BETA_1M BETA_12M ERRORS_1M
-                precio volumen BA_spread;
+	data = general.mensual
+	output = pc
+	standard
+	plots=patternprofile
+	;
+	
+	var SIZE BM LAGGED_RI BETA_1M BETA_12M ERRORS_1M 
+	        precio volumen BA_spread;
 run;
+
+%do_over(values=prin1 prin2 prin3 prin4 prin5 prin6 prin7 prin8 prin9,
+         phrase = %nrstr(%single_sort(pc, ?, 3, 0, pc_ew_?)))
+      
+%double_sort_independent(pc, prin1, prin2, 3, p_p1_p2)
+%double_sort_independent(pc, prin1, prin3, 3, p_p1_p3)
+
+%triple_sort_independent(pc, prin1, prin2, prin3, 3, p_p1_p2_p3_);
+       
 
 
 %fama_macbeth(pc, Lead_Ri_m_Rf, prin1, pc_1)

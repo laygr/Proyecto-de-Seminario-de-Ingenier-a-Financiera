@@ -26,16 +26,6 @@ proc sql noprint;
 
 %lead_1Month(mensual, ripc, lead_ripc, mensual)
 
-%cartesian_product(general.mensual, ap.tabla3a, general.mensual_w)
-
-data general.mensual_w;
-        set general.mensual_w;
-        %do_over(
-             values = Lead_Ri_m_Rf SIZE BM LAGGED_RI PRECIO VOLUMEN BA_SPREAD
-             , phrase = if ? > ?_p90 then ? = ?_p90;  if ? < ?_p5 then ? = ?_p5;
-        )
-run;
-
 %macro riskPremiumReg(inputTable, date, outputTable);
         proc reg data = &inputTable noprint outest = results ;
                 model ri_m_rf = ripc_m_rf;

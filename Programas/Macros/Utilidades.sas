@@ -10,30 +10,29 @@
         run;
 %mend;
 
-%macro winsorizing(inputTable, outputTable);
+%macro winsorizing(inputTable, variables, lowP, highP, outputTable);
+	proc tabulate data = &inputTable out = limits;
+	  var &variables ;
+	  class Date ;
+	  table
+	  	Date,
+	  	&variables,
+	  	(&lowP &highP);
+	  
+	run;
 
-        %let L=10;    %* 10th percentile *;
-        %let H=%eval(100 - &L);   %* 90th percentile*;
-        proc univariate data=&inputTable noprint;
-                var size;
-                output out=_winsor   pctlpts=&L  &H
-                pctlpre=__size;
-        run;
-        data &outputTable (drop=__:);
-                set &inputTable;
-                if _n_=1 then set _winsor;
-                array wlo  {*} __size&L;
-                array whi  {*} __size&H;
-                array wval {*} wsize;
-                array val   {*} size;
-                do _V=1 to dim(val);
-                        wval{_V}=min(max(val{_V},wlo{_V}),whi{_V});
-                end;
-        run;
+	%left_merge_by(&inputTable, limits, Date, with_limits)
+	
+	data &outputTable;
+		set with_limits;
+	  %do_over(
+	       values = &variables
+	       , phrase = if ? > ?_&highP then ? = ?_&highP;  if ? < ?_&lowP then ? = ?_&lowP;
+	  )
+	  drop _Type_ _Page_ _Table_ %do_over(values = &variables, phrase = ?_&lowP ?_&highP) ;
+	run;
 
 %mend;
-
-
 
 %macro merge_by(table1, table2, variables, outputTable);
         %sort_by(&table1, &variables)

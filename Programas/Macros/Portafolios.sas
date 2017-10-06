@@ -86,7 +86,8 @@
          %DO I = 0 %TO &nGroups-1;
                 proc ttest data=ranked plots=none;
                         var Lead_Ri_m_Rf;
-                        where rank_&variable1 in (&nm1, 0) and rank_&variable2 eq &I;
+                        where rank_&variable1 in (&nm1, 0)
+                        	and rank_&variable2 eq &I;
                         class rank_&variable1;
                         title1 "Diferencia de medias rank_&variable1 con rank_&variable2=&I";
                 run;
@@ -105,7 +106,8 @@
          %DO I = 0 %TO &nGroups-1;
                 proc ttest data=ranked plots=none;
                         var Lead_Ri_m_Rf;
-                        where rank_&variable2 in (&nm1, 0) and rank_&variable1 eq &I;
+                        where rank_&variable2 in (&nm1, 0)
+                        	and rank_&variable1 eq &I;
                         class rank_&variable2;
                         title1 "Diferencia de medias rank_&variable2 con rank_&variable1=&I";
                 run;
@@ -114,43 +116,97 @@
 %mend double_sort_independent;
 
 
-%macro triple_sort_independent(inputTable, variable1, variable2, variable3, nGroups, outputTable);
-        %sort_by(&inputTable, year month)
+%macro triple_sort_independent(inputTable, variable1, variable2,
+	variable3, nGroups, outputTable);
+	
+	%sort_by(&inputTable, year month)
+			
+	%sort_by(&inputTable, year month)
 
-        proc rank data = &inputTable out = ranked groups = &nGroups;
-                var &variable1 &variable2 &variable3;
-                by year month;
-                ranks rank_&variable1 rank_&variable2 rank_&variable3;
-        run;
+  proc rank data = &inputTable out = ranked groups = &nGroups;
+    var &variable1 &variable2 &variable3;
+    by year month;
+    ranks rank_&variable1 rank_&variable2 rank_&variable3;
+  run;
 
-        proc tabulate data = ranked out = t7.&outputTable (drop=_TYPE_);
-                class year month rank_&variable1 rank_&variable2 rank_&variable3;
-                var Lead_Ri_m_Rf;
-                table
-                        rank_&variable1 * Lead_Ri_m_Rf * (mean t)
-                        , rank_&variable2, rank_&variable3;
-                title1 "Portafolios para rank_&variable1 con rank_&variable2 y rank_&variable3";
-        run;
+  proc tabulate data = ranked out = t7.&outputTable (drop=_TYPE_);
+    class year month rank_&variable1 rank_&variable2 rank_&variable3;
+    var Lead_Ri_m_Rf;
+    table
+            rank_&variable1 * Lead_Ri_m_Rf * (mean t)
+            , rank_&variable2, rank_&variable3;
+    title1 "Portafolios para rank_&variable1 con rank_&variable2 y rank_&variable3";
+  run;
 
-        %let nm1 = %Eval(&nGroups - 1);
+  %let nm1 = %Eval(&nGroups - 1);
 
-         /* Fixing the first variable */
-        %sort_by(ranked, &variable1)
+   /* Fixing the first variable */
+  %sort_by(ranked, &variable1)
 
-        proc ttest data=ranked plots=none;
-                var Lead_Ri_m_Rf;
-                where rank_&variable1 in (&nm1,0);
-                class rank_&variable1;
-                title1 "Diferencia de medias rank_&variable1";
-        run;
+  proc ttest data=ranked plots=none;
+    var Lead_Ri_m_Rf;
+    where rank_&variable1 in (&nm1,0);
+    class rank_&variable1;
+    title1 "Diferencia de medias rank_&variable1";
+  run;
 
-         %DO I = 0 %TO &nGroups-1;
-                proc ttest data=ranked plots=none;
-                        var Lead_Ri_m_Rf;
-                        where rank_&variable1 in (&nm1, 0) and rank_&variable2 eq &I and rank_&variable3 eq &I;
-                        class rank_&variable1;
-                        title1 "Diferencia de medias rank_&variable1 con rank_&variable2 = &I y rank_&variable3 = &I";
-                run;
-        %END;
+	%DO I = 0 %TO &nGroups-1;
+		%DO J = 0 %TO &nGroups-1;
+			proc ttest data=ranked plots=none;
+		    var Lead_Ri_m_Rf;
+		    where rank_&variable1 in (&nm1, 0)
+		    	and rank_&variable2 eq &I
+		    	and rank_&variable3 eq &J;
+		    class rank_&variable1;
+		    title1 "Diferencia de medias rank_&variable1 con rank_&variable2 = &I y rank_&variable3 = &J";
+		  run;
+		%END;
+  %END;
+
+  /* Fixing the second variable */
+  %sort_by(ranked, &variable2)
+
+  proc ttest data=ranked plots=none;
+    var Lead_Ri_m_Rf;
+    where rank_&variable2 in (&nm1,0);
+    class rank_&variable2;
+    title1 "Diferencia de medias rank_&variable2";
+  run;
+
+	%DO I = 0 %TO &nGroups-1;
+		%DO J = 0 %TO &nGroups-1;
+			proc ttest data=ranked plots=none;
+		    var Lead_Ri_m_Rf;
+		    where rank_&variable2 in (&nm1, 0)
+		    	and rank_&variable1 eq &I
+		    	and rank_&variable3 eq &J;
+		    class rank_&variable2;
+		    title1 "Diferencia de medias rank_&variable2 con rank_&variable1 = &I y rank_&variable3 = &J";
+		  run;
+		%END;
+  %END;
+  
+  /* Fixing the third variable */
+  %sort_by(ranked, &variable3)
+
+  proc ttest data=ranked plots=none;
+    var Lead_Ri_m_Rf;
+    where rank_&variable3 in (&nm1,0);
+    class rank_&variable3;
+    title1 "Diferencia de medias rank_&variable2";
+  run;
+
+	%DO I = 0 %TO &nGroups-1;
+		%DO J = 0 %TO &nGroups-1;
+			proc ttest data=ranked plots=none;
+		    var Lead_Ri_m_Rf;
+		    where rank_&variable3 in (&nm1, 0)
+		    	and rank_&variable1 eq &I
+		    	and rank_&variable2 eq &J;
+		    class rank_&variable3;
+		    title1 "Diferencia de medias rank_&variable3 con rank_&variable1 = &I y rank_&variable2 = &J";
+		  run;
+		%END;
+  %END;
 
 %mend triple_sort_independent;

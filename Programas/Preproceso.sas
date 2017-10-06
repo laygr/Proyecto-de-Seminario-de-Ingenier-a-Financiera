@@ -32,11 +32,11 @@ quit;
 
 %replace_missings_by_annual_avg(diarios, BM, diarios)
 
+%winsorizing(diarios, SIZE BM PRECIO VOLUMEN BA_SPREAD, p5, p90, diariosprueba)
+
 
 /* Cetes 28 */
 /* Importar excel de cetes */
-
-
 
 FILENAME REFFILE 'C:\Users\salamicros2-st.ITAM\Desktop\Proyecto Final\Input\IPC_Cetes.xlsx';
 
