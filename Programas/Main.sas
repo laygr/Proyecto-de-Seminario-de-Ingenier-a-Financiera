@@ -17,11 +17,17 @@
         %let run_Tabla8         = 0;
         %let run_Apendice       = 0;
 
+        /*
+          La variable Path se debe de adaptar al entorno en que se ejecute el proyecto.
+          Según sea unix o windows, igual se deberá de cambiar los "/" por "\"
+            en todas las direcciones de este archivo únicamente.
+        */
         %let Path = /folders/myfolders/proyecto Final;
 
-        /* C:/Users/salamicros2-st.ITAM/Desktop/Proyecto Final; */
-
-
+        /*
+        Para correrlo en las computadoras del itam:
+        %let Path = C:/Users/salamicros2-st.ITAM/Desktop/Proyecto Final;
+        */
 
         libname datos   "&Path/Input";
         libname pre     "&Path/Preproceso";
