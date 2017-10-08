@@ -1,4 +1,4 @@
-**Proyecto final de la materia Seminario de Ingeniería Financiera del ITAM**
+**Proyecto final de la materia Seminario de Ingeniería Financiera de la Maestría en Finanzas del ITAM**
 
 Integrantes del Equipo
 - Jose Luis Ballesteros (https://www.facebook.com/profile.php?id=100007911767142)
