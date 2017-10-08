@@ -6,7 +6,7 @@ Integrantes del Equipo
 - Jesús González (https://www.facebook.com/jesus.irais.gonzalez.romero)
 
 Instrucciones:
+- Se debe de descomprimir el “input.zip” antes de correr algún archivo, pues esta carpeta contiene los datos de entrada.
 - El código que se ejecuta está en /Programas.
-- Se debe de descomprimir el “input.zip”
-- Se debe de iniciar corriendo el archivo /Programas/main.Sas
+- Se debe de iniciar corriendo el archivo /Programas/main.sas
 - Las guía es el archivo “Guía Trabajo Final.docx”.
