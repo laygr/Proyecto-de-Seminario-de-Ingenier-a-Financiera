@@ -9,4 +9,4 @@ Instrucciones:
 - El código que se ejecuta está en /Programas.
 - Se debe de descomprimir el “input.zip”
 - Se debe de iniciar corriendo el archivo /Programas/main.Sas
-- Las instrucciones del trabajo se encuentran en “Guía Trabajo Final.docx”.
+- Las guía es el archivo “Guía Trabajo Final.docx”.
