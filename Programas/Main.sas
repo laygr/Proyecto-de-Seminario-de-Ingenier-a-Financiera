@@ -15,6 +15,7 @@
         %let run_Tabla6         = 0;
         %let run_Tabla7         = 0;
         %let run_Tabla8         = 0;
+        %let run_Apendice       = 0;
 
         %let Path = /folders/myfolders/proyecto Final;
 
@@ -97,6 +98,9 @@
         %end;
         %IF &run_Tabla8 OR &run_all %THEN %do;
                 %INCLUDE "&Programs/Tabla 8.sas";
+        %end;
+        %IF &run_Apendice OR &run_all %THEN %do;
+                %INCLUDE "&Programs/Apendice.sas";
         %end;
 %MEND;
 %Main

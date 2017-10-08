@@ -11,26 +11,50 @@
 %mend;
 
 %macro winsorizing(inputTable, variables, lowP, highP, outputTable);
-	proc tabulate data = &inputTable out = limits;
-	  var &variables ;
-	  class Date ;
-	  table
-	  	Date,
-	  	&variables,
-	  	(&lowP &highP);
-	  
-	run;
+        proc tabulate data = &inputTable out = limits;
+          var &variables ;
+          class Date ;
+          table
+                Date*
+                (&variables),
+                (&lowP &highP);
 
-	%left_merge_by(&inputTable, limits, Date, with_limits)
-	
-	data &outputTable;
-		set with_limits;
-	  %do_over(
-	       values = &variables
-	       , phrase = if ? > ?_&highP then ? = ?_&highP;  if ? < ?_&lowP then ? = ?_&lowP;
-	  )
-	  drop _Type_ _Page_ _Table_ %do_over(values = &variables, phrase = ?_&lowP ?_&highP) ;
-	run;
+        run;
+
+        %left_merge_by(&inputTable, limits, Date, with_limits)
+
+        data &outputTable;
+                set with_limits;
+          %do_over(
+               values = &variables
+               , phrase = if ? > ?_&highP then ? = ?_&highP;  if ? < ?_&lowP then ? = ?_&lowP;
+          )
+          drop _Type_ _Page_ _Table_ %do_over(values = &variables, phrase = ?_&lowP ?_&highP) ;
+        run;
+
+%mend;
+
+%macro winsorizingM(inputTable, variables, lowP, highP, outputTable);
+        proc tabulate data = &inputTable out = limits;
+          var &variables ;
+          class Year Month;
+          table
+                Year*Month*
+                (&variables),
+                (&lowP &highP);
+
+        run;
+
+        %left_merge_by(&inputTable, limits, Year Month, with_limits)
+
+        data &outputTable;
+                set with_limits;
+          %do_over(
+               values = &variables
+               , phrase = if ? > ?_&highP then ? = ?_&highP;  if ? < ?_&lowP then ? = ?_&lowP;
+          )
+          drop _Type_ _Page_ _Table_ %do_over(values = &variables, phrase = ?_&lowP ?_&highP) ;
+        run;
 
 %mend;
 
@@ -218,8 +242,10 @@
         %shift_n_Months(&table, &dataColumn, &leadDataName, -1, &outputTable);
 %mend;
 
-/* Macro para adjuntar tabla1 y tabla 2*/
-%macro append_tables(tabla1, tabla2);
-    proc append base = &tabla1 data = &tabla2;
-    run;
+%macro delete_tables(tables);
+	%do_over(values = &tables, phrase = PROC Delete data = ?;run;)
+%mend;
+
+%macro append_tables(baseTable, tablesToAppend);
+  %do_over(values = &tablesToAppend, phrase = proc append base = &baseTable data = ?;run;)
 %mend append_tables;

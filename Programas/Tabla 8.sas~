@@ -31,7 +31,7 @@ run;
 
 %all_triple_portfolios(general.mensual, combinations,
         SIZE BM LAGGED_RI BETA_1M BETA_12M ERRORS_1M precio volumen BA_spread,
-        byVariables
+        t8.byVariables
 )
 /* PCA */
 %sort_by(general.mensual, year month ticker)
@@ -44,5 +44,13 @@ proc princomp
 run;
 %all_triple_portfolios(pc, combinations,
         prin1 prin2 prin3 prin4 prin5 prin6 prin7 prin8 prin9,
-        byPrincipalComponents
+        t8.byPrincipalComponents
 )
+
+data t8.byVariables;
+	set byVariables;
+run;
+
+data t8.byPrincipalComponents;
+	set byPrincipalComponents;
+run;
