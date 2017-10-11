@@ -1,5 +1,5 @@
 Data diarios;
-    set datos.mex;
+    set input.mex;
     year = year(DATE);
     month = month(DATE);
     size = p *nosh;
@@ -70,7 +70,7 @@ run;
 %merge_by(diarios_cetes, IPC, Date, diarios_cetes_IPC)
 
 data morgan_stanley_world;
-    set datos.indice;
+    set input.indice;
     where ticker = 'MSWRLD';
     rename ret_1d = rMSWRLD;
     keep date ret_1d;
