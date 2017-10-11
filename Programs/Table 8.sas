@@ -14,7 +14,11 @@
   
   proc sql;
   create table &outputTable as
-  select fixed_v, count(fixed_v_t) as significance_count
+  select
+  	fixed_v,
+  	avg(fixed_v_mean) as mean_mean,
+  	avg(fixed_v_stddev) as stddev_mean,
+  	count(fixed_v_t) as significance_count
   from total
   where fixed_v_t < -1.65 OR fixed_v_t > 1.65
   group by fixed_v
@@ -31,7 +35,7 @@ run;
 
 %all_triple_portfolios(general.mensual, combinations,
         SIZE BM LAGGED_RI BETA_1M BETA_12M ERRORS_1M precio volumen BA_spread,
-        byVariables
+        t8.byVariables
 )
 /* PCA */
 %sort_by(general.mensual, year month ticker)
@@ -44,5 +48,5 @@ proc princomp
 run;
 %all_triple_portfolios(pc, combinations,
         prin1 prin2 prin3 prin4 prin5 prin6 prin7 prin8 prin9,
-        byPrincipalComponents
+        t8.byPrincipalComponents
 )

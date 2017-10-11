@@ -133,6 +133,7 @@
       	create table portfolio_diff as
       	select
       		stats.mean as fixed_v_mean,
+      		stats.StdDev as fixed_v_stddev,
       		ttests.tValue as fixed_v_t
       	from stats as stats
       	join ttests as ttests
