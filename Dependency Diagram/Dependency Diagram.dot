@@ -1,0 +1,9 @@
+digraph G {
+  "Programs/Preprocessing.sas" -> "Input/IPC_Cetes.xlsx"
+  "Programs/Preprocessing.sas" -> "Input/indice.sas7bat"
+  "Programs/Preprocessing.sas" -> "Input/mex.sas7bat"
+  "Programs/Preprocessing.sas" -> "Programs/Macros/*.sas"
+  "Programs/General.sas" -> "Programs/Preprocessing.sas"
+  "Programs/Table *.sas" -> "Programs/General.sas"
+  "Programs/Appendix.sas" -> "Programs/General.sas"
+}

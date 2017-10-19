@@ -12,3 +12,6 @@ Instrucciones para correr el archivo:
 - El código que se ejecuta está en /Programas.
 - Se debe de iniciar corriendo el archivo /Programas/main.sas
 - De ser necesario, el path deberá de adaptarse al entorno en que se ejecute el proyecto. Esto se puede hacer modificando la línea pertinente en el archivo /Programas/main.sas
+
+Diagrama que ilustra la dependencia de la ejecución de los programas:
+![Dependency Diagram](https://github.com/laygr/Proyecto-de-Seminario-de-Ingenier-a-Financiera/blob/master/Dependency%20Diagram/Dependency%20Diagram.png?raw=true)
